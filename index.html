@@ -10,6 +10,11 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Vanity">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://script.google.com">
+<link rel="dns-prefetch" href="https://script.googleusercontent.com">
+<link rel="preload" as="image" href="v33-photo.webp" fetchpriority="low">
+<link rel="preload" as="image" href="s359-photo.webp" fetchpriority="low">
+<link rel="preload" as="image" href="v35-hair.webp" fetchpriority="low">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -32,7 +37,7 @@
 </head>
 <body>
 <iframe id="app" src="https://script.google.com/macros/s/AKfycbzqeV4lxV0kpg4jzmOHs-Ljf_7kSoMQo-IN7QOahX8-zq65rsaQ0b_SkBOE2FuV3bAE4A/exec" title="Vanity" allow="camera; clipboard-read; clipboard-write; fullscreen"></iframe>
-<div id="loading" class="screen"><b>Vanity</b><small>ESTILISTAS UNISEX</small></div>
+<div id="loading" class="screen"><b>Vanity</b><small>ESTILISTAS UNISEX</small><p id="slow" style="opacity:0;transition:opacity .4s">Cargando… la conexión va algo lenta.</p></div>
 <div id="login" class="screen">
   <b>Vanity</b><small>ESTILISTAS UNISEX</small>
   <p>Para entrar, inicia sesión con la cuenta de Google del salón (vanityestilistasempleados). Solo hace falta la primera vez.</p>
@@ -51,6 +56,7 @@
   function waitForApp(ms) { clearTimeout(timer); timer = setTimeout(function () { if (!ok) { loading.style.display = 'none'; login.style.display = 'flex'; } }, ms); }
   app.addEventListener('load', function () { if (!ok) waitForApp(9000); });
   waitForApp(30000);
+  setTimeout(function(){ if (!ok) { var s = document.getElementById('slow'); if (s) s.style.opacity = 1; } }, 5000);
   function retry() { ok = false; login.style.display = 'none'; loading.style.display = 'flex'; loading.style.opacity = 1; app.src = app.src; waitForApp(30000); }
 </script>
 </body>
