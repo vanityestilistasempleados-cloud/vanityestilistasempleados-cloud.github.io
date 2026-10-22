@@ -30,12 +30,16 @@
   .btn2 { font: 14px -apple-system, "Segoe UI", sans-serif; color: #9a7442; background: none; border: 0; padding: 10px; text-decoration: underline; }
   #loading { pointer-events: none; }
   /* V35.25: en el iPhone, banda fija bajo la hora para que el contenido no pase por la zona que el sistema difumina. */
-  body.phone { padding-top: 18px; }
-  body.phone #app { height: calc(100dvh - 18px); }
+  body.phone { padding-top: 8px; }
+  body.phone #app { height: calc(100dvh - 8px); }
+  /* Velo suave: el contenido se desvanece bajo la hora en vez de cortarse en seco. */
+  #topfade { display: none; position: fixed; left: 0; right: 0; top: 0; height: 30px; z-index: 5; pointer-events: none; background: linear-gradient(#faf8f4 0, #faf8f4 8px, rgba(250,248,244,.85) 14px, rgba(250,248,244,0) 30px); }
+  body.phone #topfade { display: block; }
   #login { display: none; }
 </style>
 </head>
 <body>
+<div id="topfade"></div>
 <iframe id="app" src="https://script.google.com/macros/s/AKfycbzqeV4lxV0kpg4jzmOHs-Ljf_7kSoMQo-IN7QOahX8-zq65rsaQ0b_SkBOE2FuV3bAE4A/exec" title="Vanity" allow="camera; clipboard-read; clipboard-write; fullscreen"></iframe>
 <div id="loading" class="screen"><b>Vanity</b><small>ESTILISTAS UNISEX</small><p id="slow" style="opacity:0;transition:opacity .4s">Cargando… la conexión va algo lenta.</p></div>
 <div id="login" class="screen">
