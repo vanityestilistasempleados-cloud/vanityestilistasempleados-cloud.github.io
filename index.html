@@ -6,8 +6,10 @@
 <title>Vanity</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#faf8f4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Vanity">
-<!-- El icono abre la app en Safari: asi usa la sesion de Google iniciada en el navegador. -->
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -15,17 +17,37 @@
   html, body { margin: 0; padding: 0; height: 100%; background: #faf8f4; overflow: hidden; }
   body { padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left); box-sizing: border-box; }
   #app { display: block; border: 0; width: 100%; height: 100%; height: calc(100dvh - env(safe-area-inset-top)); background: #faf8f4; }
-  #loading { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font-family: Georgia, serif; color: #3b3023; pointer-events: none; transition: opacity .4s; }
-  #loading b { font-size: 34px; font-weight: 500; }
-  #loading span { font: 12px/1 -apple-system, "Segoe UI", sans-serif; letter-spacing: .3em; color: #9a7442; }
+  .screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 24px; box-sizing: border-box; text-align: center; background: #faf8f4; font-family: Georgia, serif; color: #3b3023; transition: opacity .4s; }
+  .screen b { font-size: 36px; font-weight: 500; }
+  .screen small { font: 12px/1 -apple-system, "Segoe UI", sans-serif; letter-spacing: .3em; color: #9a7442; }
+  .screen p { font: 15px/1.5 -apple-system, "Segoe UI", sans-serif; color: #7d6c55; max-width: 320px; margin: 8px 0 4px; }
+  .btn { font: 600 16px -apple-system, "Segoe UI", sans-serif; color: #fff; background: #9a7442; padding: 15px 24px; border-radius: 14px; text-decoration: none; border: 0; }
+  .btn2 { font: 14px -apple-system, "Segoe UI", sans-serif; color: #9a7442; background: none; border: 0; padding: 10px; text-decoration: underline; }
+  #loading { pointer-events: none; }
+  #login { display: none; }
 </style>
 </head>
 <body>
-<div id="loading"><b>Vanity</b><span>ESTILISTAS UNISEX</span></div>
-<iframe id="app"
-  src="https://script.google.com/macros/s/AKfycbzqeV4lxV0kpg4jzmOHs-Ljf_7kSoMQo-IN7QOahX8-zq65rsaQ0b_SkBOE2FuV3bAE4A/exec"
-  title="Vanity"
-  allow="camera; clipboard-read; clipboard-write; fullscreen"
-  onload="document.getElementById('loading').style.opacity=0"></iframe>
+<iframe id="app" src="https://script.google.com/macros/s/AKfycbzqeV4lxV0kpg4jzmOHs-Ljf_7kSoMQo-IN7QOahX8-zq65rsaQ0b_SkBOE2FuV3bAE4A/exec" title="Vanity" allow="camera; clipboard-read; clipboard-write; fullscreen"></iframe>
+<div id="loading" class="screen"><b>Vanity</b><small>ESTILISTAS UNISEX</small></div>
+<div id="login" class="screen">
+  <b>Vanity</b><small>ESTILISTAS UNISEX</small>
+  <p>Para entrar, inicia sesión con la cuenta de Google del salón (vanityestilistasempleados). Solo hace falta la primera vez.</p>
+  <a class="btn" href="https://accounts.google.com/AccountChooser?continue=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycbzqeV4lxV0kpg4jzmOHs-Ljf_7kSoMQo-IN7QOahX8-zq65rsaQ0b_SkBOE2FuV3bAE4A%2Fexec%3Fvolver%3D1">INICIAR SESIÓN CON GOOGLE</a>
+  <button class="btn2" onclick="retry()">Reintentar</button>
+</div>
+<script>
+  // V35.24: si la app no confirma que ha cargado (sesión de Google no reconocida), se ofrece iniciar sesión.
+  var ok = false, timer = null;
+  var app = document.getElementById('app'), loading = document.getElementById('loading'), login = document.getElementById('login');
+  if (location.search.indexOf('login=ok') >= 0) { try { history.replaceState(null, '', location.pathname); } catch (e) {} }
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.vanity === 'ok') { ok = true; clearTimeout(timer); loading.style.opacity = 0; login.style.display = 'none'; setTimeout(function(){ loading.style.display = 'none'; }, 450); }
+  });
+  function waitForApp(ms) { clearTimeout(timer); timer = setTimeout(function () { if (!ok) { loading.style.display = 'none'; login.style.display = 'flex'; } }, ms); }
+  app.addEventListener('load', function () { if (!ok) waitForApp(9000); });
+  waitForApp(30000);
+  function retry() { ok = false; login.style.display = 'none'; loading.style.display = 'flex'; loading.style.opacity = 1; app.src = app.src; waitForApp(30000); }
+</script>
 </body>
 </html>
