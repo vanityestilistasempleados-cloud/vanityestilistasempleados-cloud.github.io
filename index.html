@@ -49,5 +49,8 @@
   waitForApp(30000);
   function retry() { ok = false; login.style.display = 'none'; loading.style.display = 'flex'; loading.style.opacity = 1; app.src = app.src; waitForApp(30000); }
 </script>
+<div id="diag" style="position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:99;background:#3b3023;color:#fff;font:600 15px/1.5 -apple-system,sans-serif;padding:10px 14px;border-radius:12px;text-align:center;pointer-events:none"></div>
+<div id="probe" style="position:fixed;top:0;left:0;width:1px;height:env(safe-area-inset-top);visibility:hidden"></div>
+<script>setTimeout(function(){var p=document.getElementById('probe').getBoundingClientRect().height;var d=document.getElementById('diag');d.innerHTML='PRUEBA \u00b7 arriba: '+Math.round(p)+' \u00b7 alto: '+innerHeight+' \u00b7 pantalla: '+screen.height+' \u00b7 app: '+(navigator.standalone?'s\u00ed':'no');setTimeout(function(){d.remove();},20000);},800);</script>
 </body>
 </html>
